@@ -1,0 +1,6 @@
+# Known vulnerable dependencies for testing pip-audit detection
+flask==2.2.0
+requests==2.25.0
+jinja2==3.1.1
+werkzeug==2.2.0
+cryptography==3.4.0

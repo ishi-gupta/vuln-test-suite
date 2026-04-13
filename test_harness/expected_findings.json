@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "description": "Ground truth for adversarial test suite. Maps each vulnerable file to expected findings.",
+    "how_to_use": "Run the scanner against vulnerable_code/, compare results to this file, compute detection rate per category."
+  },
+  "categories": {
+    "sql_injection": {
+      "file": "vulnerable_code/sql_injection.py",
+      "cwe": "CWE-89",
+      "expected_findings": [
+        {"function": "sql_injection_string_concat", "line": 10, "description": "String concatenation SQL injection"},
+        {"function": "sql_injection_format_string", "line": 15, "description": "Format string SQL injection"},
+        {"function": "sql_injection_fstring", "line": 20, "description": "f-string SQL injection"},
+        {"function": "sql_injection_join", "line": 26, "description": "SQL injection via join"},
+        {"function": "sql_injection_execute", "line": 31, "description": "Direct execute with string formatting"}
+      ],
+      "min_expected_detections": 3
+    },
+    "command_injection": {
+      "file": "vulnerable_code/command_injection.py",
+      "cwe": "CWE-78",
+      "expected_findings": [
+        {"function": "command_injection_os_system", "line": 12, "description": "os.system with user input"},
+        {"function": "command_injection_subprocess_shell", "line": 17, "description": "subprocess.call with shell=True"},
+        {"function": "command_injection_popen", "line": 22, "description": "subprocess.Popen with shell=True"},
+        {"function": "command_injection_os_popen", "line": 27, "description": "os.popen with user input"},
+        {"function": "command_injection_eval", "line": 32, "description": "eval() with user input"}
+      ],
+      "min_expected_detections": 4
+    },
+    "xss": {
+      "file": "vulnerable_code/xss.py",
+      "cwe": "CWE-79",
+      "expected_findings": [
+        {"function": "xss_direct_html", "line": 10, "description": "Direct HTML injection"},
+        {"function": "xss_format_string", "line": 15, "description": "Format string in HTML template"},
+        {"function": "xss_fstring_html", "line": 20, "description": "f-string in HTML/script tag"},
+        {"function": "xss_markup_unsafe", "line": 25, "description": "markupsafe.Markup on untrusted data"},
+        {"function": "xss_response_write", "line": 29, "description": "Direct response writing"}
+      ],
+      "min_expected_detections": 1
+    },
+    "path_traversal": {
+      "file": "vulnerable_code/path_traversal.py",
+      "cwe": "CWE-22",
+      "expected_findings": [
+        {"function": "path_traversal_open", "line": 11, "description": "open() with user input concatenation"},
+        {"function": "path_traversal_os_path_join", "line": 17, "description": "os.path.join with user input"},
+        {"function": "path_traversal_send_file", "line": 23, "description": "File serving with user input"},
+        {"function": "path_traversal_makedirs", "line": 28, "description": "makedirs with user input"}
+      ],
+      "min_expected_detections": 1
+    },
+    "hardcoded_secrets": {
+      "file": "vulnerable_code/hardcoded_secrets.py",
+      "cwe": "CWE-798",
+      "expected_findings": [
+        {"line": 11, "description": "AWS Access Key ID"},
+        {"line": 12, "description": "AWS Secret Access Key"},
+        {"line": 15, "description": "GitHub token"},
+        {"line": 18, "description": "API key (sk-proj)"},
+        {"line": 21, "description": "Database URL with password"},
+        {"line": 24, "description": "Slack webhook URL"},
+        {"line": 29, "description": "Hardcoded password in function"}
+      ],
+      "min_expected_detections": 3
+    },
+    "weak_crypto": {
+      "file": "vulnerable_code/weak_crypto.py",
+      "cwe": "CWE-327",
+      "expected_findings": [
+        {"function": "weak_hash_md5", "line": 11, "description": "MD5 for password hashing"},
+        {"function": "weak_hash_sha1", "line": 16, "description": "SHA1 for security"},
+        {"function": "weak_random", "line": 22, "description": "random module for security tokens"},
+        {"function": "insecure_temp_file", "line": 27, "description": "mktemp (race condition)"},
+        {"function": "weak_cipher", "line": 33, "description": "DES cipher"}
+      ],
+      "min_expected_detections": 3
+    },
+    "insecure_deserialization": {
+      "file": "vulnerable_code/insecure_deserialization.py",
+      "cwe": "CWE-502",
+      "expected_findings": [
+        {"function": "insecure_pickle_loads", "line": 13, "description": "pickle.loads on untrusted data"},
+        {"function": "insecure_pickle_load", "line": 18, "description": "pickle.load from file"},
+        {"function": "insecure_yaml_load", "line": 23, "description": "yaml.load without SafeLoader"},
+        {"function": "insecure_marshal_loads", "line": 28, "description": "marshal.loads on untrusted data"},
+        {"function": "insecure_exec", "line": 33, "description": "exec() on user input"}
+      ],
+      "min_expected_detections": 3
+    }
+  }
+}
