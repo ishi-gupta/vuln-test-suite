@@ -114,10 +114,15 @@ def match_findings(scan_findings, expected_vulns, line_tolerance=5):
             finding_line = finding.get("line_number", 0)
 
             # Match by file path (check if one contains the other)
+            # Guard against empty strings — str.endswith("") is always True
             file_match = (
-                vuln_file == finding_file
-                or vuln_file.endswith(finding_file)
-                or finding_file.endswith(vuln_file)
+                vuln_file
+                and finding_file
+                and (
+                    vuln_file == finding_file
+                    or vuln_file.endswith(finding_file)
+                    or finding_file.endswith(vuln_file)
+                )
             )
 
             if not file_match:
