@@ -80,6 +80,18 @@ def normalize_path(file_path):
     return path
 
 
+def _extract_package_names(description):
+    """Extract likely package names from a vulnerability description.
+
+    E.g. "Flask 2.2.0 with known CVEs" -> ["flask"]
+    """
+    # Common pattern: first word is the package name
+    words = description.split()
+    if words:
+        return [words[0].lower().rstrip(",.:;")]
+    return []
+
+
 def match_findings(scan_findings, expected_vulns, line_tolerance=5):
     """Match scanner findings to expected vulnerabilities.
 
@@ -95,6 +107,7 @@ def match_findings(scan_findings, expected_vulns, line_tolerance=5):
         vuln_file = normalize_path(vuln["file"])
         vuln_line = vuln["line"]
         vuln_id = vuln["id"]
+        vuln_category = vuln.get("category", "")
 
         for i, finding in enumerate(scan_findings):
             finding_file = normalize_path(finding.get("file_path", ""))
@@ -107,10 +120,33 @@ def match_findings(scan_findings, expected_vulns, line_tolerance=5):
                 or finding_file.endswith(vuln_file)
             )
 
+            if not file_match:
+                continue
+
+            # Special handling for SCA/dependency findings (pip-audit)
+            # These often have line_number=0 — match by package name in title instead
+            if vuln_category == "vulnerable_dependencies" and finding.get("scanner") == "pip-audit":
+                # Extract package name from vuln description (e.g. "Flask 2.2.0 with known CVEs")
+                vuln_desc_lower = vuln.get("description", "").lower()
+                finding_title_lower = finding.get("title", "").lower()
+                finding_pkg = finding.get("package_name", "").lower()
+                # Match if the package name appears in the vuln description or vice versa
+                pkg_match = (
+                    (finding_pkg and finding_pkg in vuln_desc_lower)
+                    or any(
+                        pkg in finding_title_lower
+                        for pkg in _extract_package_names(vuln.get("description", ""))
+                    )
+                )
+                if pkg_match:
+                    matched[vuln_id].append(finding)
+                    matched_finding_indices.add(i)
+                continue
+
             # Match by line number with tolerance
             line_match = abs(vuln_line - finding_line) <= line_tolerance
 
-            if file_match and line_match:
+            if line_match:
                 matched[vuln_id].append(finding)
                 matched_finding_indices.add(i)
 
