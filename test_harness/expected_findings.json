@@ -1,0 +1,364 @@
+{
+  "vulnerabilities": [
+    {
+      "id": "sqli_001",
+      "category": "sql_injection",
+      "cwe_id": "CWE-89",
+      "file": "vulnerable_code/sql_injection.py",
+      "line": 20,
+      "severity": "high",
+      "description": "String concatenation in SQL query",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "sqli_002",
+      "category": "sql_injection",
+      "cwe_id": "CWE-89",
+      "file": "vulnerable_code/sql_injection.py",
+      "line": 29,
+      "severity": "high",
+      "description": "f-string in SQL query",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "sqli_003",
+      "category": "sql_injection",
+      "cwe_id": "CWE-89",
+      "file": "vulnerable_code/sql_injection.py",
+      "line": 38,
+      "severity": "high",
+      "description": ".format() in SQL query",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "sqli_004",
+      "category": "sql_injection",
+      "cwe_id": "CWE-89",
+      "file": "vulnerable_code/sql_injection.py",
+      "line": 48,
+      "severity": "high",
+      "description": "Variable assignment then execute (harder to detect)",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "sqli_005",
+      "category": "sql_injection",
+      "cwe_id": "CWE-89",
+      "file": "vulnerable_code/sql_injection.py",
+      "line": 60,
+      "severity": "high",
+      "description": "Multi-step taint flow: user input -> variable -> another variable -> query",
+      "expected_scanners": ["semgrep"]
+    },
+    {
+      "id": "xss_001",
+      "category": "xss",
+      "cwe_id": "CWE-79",
+      "file": "vulnerable_code/xss.py",
+      "line": 12,
+      "severity": "high",
+      "description": "Direct user input in HTML response",
+      "expected_scanners": ["semgrep"]
+    },
+    {
+      "id": "xss_002",
+      "category": "xss",
+      "cwe_id": "CWE-79",
+      "file": "vulnerable_code/xss.py",
+      "line": 19,
+      "severity": "high",
+      "description": "Template string with unescaped user input",
+      "expected_scanners": ["semgrep"]
+    },
+    {
+      "id": "xss_003",
+      "category": "xss",
+      "cwe_id": "CWE-79",
+      "file": "vulnerable_code/xss.py",
+      "line": 27,
+      "severity": "high",
+      "description": "Reflected XSS pattern via .format()",
+      "expected_scanners": ["semgrep"]
+    },
+    {
+      "id": "xss_004",
+      "category": "xss",
+      "cwe_id": "CWE-79",
+      "file": "vulnerable_code/xss.py",
+      "line": 34,
+      "severity": "high",
+      "description": "User input in script tag construction",
+      "expected_scanners": ["semgrep"]
+    },
+    {
+      "id": "cmdi_001",
+      "category": "command_injection",
+      "cwe_id": "CWE-78",
+      "file": "vulnerable_code/command_injection.py",
+      "line": 15,
+      "severity": "critical",
+      "description": "os.system() with user input",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "cmdi_002",
+      "category": "command_injection",
+      "cwe_id": "CWE-78",
+      "file": "vulnerable_code/command_injection.py",
+      "line": 22,
+      "severity": "critical",
+      "description": "subprocess.call() with shell=True and user input",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "cmdi_003",
+      "category": "command_injection",
+      "cwe_id": "CWE-78",
+      "file": "vulnerable_code/command_injection.py",
+      "line": 29,
+      "severity": "critical",
+      "description": "exec() with user input",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "cmdi_004",
+      "category": "command_injection",
+      "cwe_id": "CWE-78",
+      "file": "vulnerable_code/command_injection.py",
+      "line": 36,
+      "severity": "critical",
+      "description": "eval() with user input",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "cmdi_005",
+      "category": "command_injection",
+      "cwe_id": "CWE-78",
+      "file": "vulnerable_code/command_injection.py",
+      "line": 43,
+      "severity": "critical",
+      "description": "subprocess.Popen with shell=True and user input",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "path_001",
+      "category": "path_traversal",
+      "cwe_id": "CWE-22",
+      "file": "vulnerable_code/path_traversal.py",
+      "line": 14,
+      "severity": "high",
+      "description": "open() with user-controlled path via concatenation",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "path_002",
+      "category": "path_traversal",
+      "cwe_id": "CWE-22",
+      "file": "vulnerable_code/path_traversal.py",
+      "line": 22,
+      "severity": "high",
+      "description": "os.path.join() with user input (does not prevent ../)",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "path_003",
+      "category": "path_traversal",
+      "cwe_id": "CWE-22",
+      "file": "vulnerable_code/path_traversal.py",
+      "line": 32,
+      "severity": "high",
+      "description": "File write with unvalidated filename",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "path_004",
+      "category": "path_traversal",
+      "cwe_id": "CWE-22",
+      "file": "vulnerable_code/path_traversal.py",
+      "line": 41,
+      "severity": "medium",
+      "description": "Directory listing with user input",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "secret_001",
+      "category": "hardcoded_secrets",
+      "cwe_id": "CWE-798",
+      "file": "vulnerable_code/hardcoded_secrets.py",
+      "line": 9,
+      "severity": "critical",
+      "description": "Hardcoded OpenAI-style API key",
+      "expected_scanners": ["gitleaks", "semgrep"]
+    },
+    {
+      "id": "secret_002",
+      "category": "hardcoded_secrets",
+      "cwe_id": "CWE-798",
+      "file": "vulnerable_code/hardcoded_secrets.py",
+      "line": 13,
+      "severity": "critical",
+      "description": "Hardcoded AWS secret access key",
+      "expected_scanners": ["gitleaks", "semgrep"]
+    },
+    {
+      "id": "secret_003",
+      "category": "hardcoded_secrets",
+      "cwe_id": "CWE-798",
+      "file": "vulnerable_code/hardcoded_secrets.py",
+      "line": 18,
+      "severity": "critical",
+      "description": "Hardcoded password in database connection URL",
+      "expected_scanners": ["gitleaks", "semgrep"]
+    },
+    {
+      "id": "secret_004",
+      "category": "hardcoded_secrets",
+      "cwe_id": "CWE-798",
+      "file": "vulnerable_code/hardcoded_secrets.py",
+      "line": 22,
+      "severity": "critical",
+      "description": "Hardcoded GitHub personal access token",
+      "expected_scanners": ["gitleaks", "semgrep"]
+    },
+    {
+      "id": "secret_005",
+      "category": "hardcoded_secrets",
+      "cwe_id": "CWE-798",
+      "file": "vulnerable_code/hardcoded_secrets.py",
+      "line": 26,
+      "severity": "high",
+      "description": "Hardcoded RSA private key",
+      "expected_scanners": ["gitleaks", "semgrep"]
+    },
+    {
+      "id": "crypto_001",
+      "category": "weak_crypto",
+      "cwe_id": "CWE-327",
+      "file": "vulnerable_code/weak_crypto.py",
+      "line": 16,
+      "severity": "high",
+      "description": "MD5 used for password hashing",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "crypto_002",
+      "category": "weak_crypto",
+      "cwe_id": "CWE-327",
+      "file": "vulnerable_code/weak_crypto.py",
+      "line": 23,
+      "severity": "medium",
+      "description": "SHA1 used for security-sensitive hashing",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "crypto_003",
+      "category": "weak_crypto",
+      "cwe_id": "CWE-327",
+      "file": "vulnerable_code/weak_crypto.py",
+      "line": 31,
+      "severity": "high",
+      "description": "Insecure random.choice() for token generation instead of secrets module",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "crypto_004",
+      "category": "weak_crypto",
+      "cwe_id": "CWE-327",
+      "file": "vulnerable_code/weak_crypto.py",
+      "line": 38,
+      "severity": "medium",
+      "description": "random.randint() used for session ID generation",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "deser_001",
+      "category": "insecure_deserialization",
+      "cwe_id": "CWE-502",
+      "file": "vulnerable_code/insecure_deserialization.py",
+      "line": 17,
+      "severity": "critical",
+      "description": "pickle.loads() with user-controlled data",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "deser_002",
+      "category": "insecure_deserialization",
+      "cwe_id": "CWE-502",
+      "file": "vulnerable_code/insecure_deserialization.py",
+      "line": 24,
+      "severity": "critical",
+      "description": "yaml.load() without safe loader",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "deser_003",
+      "category": "insecure_deserialization",
+      "cwe_id": "CWE-502",
+      "file": "vulnerable_code/insecure_deserialization.py",
+      "line": 31,
+      "severity": "critical",
+      "description": "eval() used instead of json.loads() for JSON parsing",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "deser_004",
+      "category": "insecure_deserialization",
+      "cwe_id": "CWE-502",
+      "file": "vulnerable_code/insecure_deserialization.py",
+      "line": 38,
+      "severity": "critical",
+      "description": "marshal.loads() with user-controlled data",
+      "expected_scanners": ["bandit", "semgrep"]
+    },
+    {
+      "id": "dep_001",
+      "category": "vulnerable_dependencies",
+      "cwe_id": "CWE-1035",
+      "file": "vulnerable_code/vulnerable_deps/requirements.txt",
+      "line": 2,
+      "severity": "high",
+      "description": "Flask 2.2.0 with known CVEs",
+      "expected_scanners": ["pip-audit"]
+    },
+    {
+      "id": "dep_002",
+      "category": "vulnerable_dependencies",
+      "cwe_id": "CWE-1035",
+      "file": "vulnerable_code/vulnerable_deps/requirements.txt",
+      "line": 3,
+      "severity": "high",
+      "description": "Jinja2 3.1.1 with known CVEs",
+      "expected_scanners": ["pip-audit"]
+    },
+    {
+      "id": "dep_003",
+      "category": "vulnerable_dependencies",
+      "cwe_id": "CWE-1035",
+      "file": "vulnerable_code/vulnerable_deps/requirements.txt",
+      "line": 4,
+      "severity": "high",
+      "description": "Werkzeug 2.2.0 with known CVEs",
+      "expected_scanners": ["pip-audit"]
+    },
+    {
+      "id": "dep_004",
+      "category": "vulnerable_dependencies",
+      "cwe_id": "CWE-1035",
+      "file": "vulnerable_code/vulnerable_deps/requirements.txt",
+      "line": 5,
+      "severity": "high",
+      "description": "cryptography 3.4.0 with known CVEs",
+      "expected_scanners": ["pip-audit"]
+    },
+    {
+      "id": "dep_005",
+      "category": "vulnerable_dependencies",
+      "cwe_id": "CWE-1035",
+      "file": "vulnerable_code/vulnerable_deps/requirements.txt",
+      "line": 6,
+      "severity": "high",
+      "description": "Pillow 9.0.0 with known CVEs",
+      "expected_scanners": ["pip-audit"]
+    }
+  ]
+}
