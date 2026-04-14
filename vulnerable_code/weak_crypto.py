@@ -13,7 +13,7 @@ import string
 # Expected scanner: bandit, semgrep
 def hash_password_md5(password):
     """MD5 for password hashing."""
-    return hashlib.md5(password.encode()).hexdigest()
+    return hashlib.md5(password.encode(), usedforsecurity=False).hexdigest()
 
 
 # VULN: category=weak_crypto, id=crypto_002, severity=medium
