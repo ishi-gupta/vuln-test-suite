@@ -8,11 +8,11 @@ import os
 import subprocess
 
 
-# VULN: category=command_injection, id=cmdi_001, severity=critical
-# Expected scanner: bandit, semgrep
+# FIX: category=command_injection, id=cmdi_001, severity=critical
+# Fixed: replaced os.system() with subprocess.run() using list args to prevent shell injection
 def ping_host(hostname):
-    """os.system() with user input."""
-    os.system("ping -c 1 " + hostname)
+    """Ping a host safely without shell injection."""
+    subprocess.run(["ping", "-c", "1", hostname], check=False)
 
 
 # VULN: category=command_injection, id=cmdi_002, severity=critical
