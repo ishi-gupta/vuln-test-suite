@@ -4,6 +4,7 @@ Intentionally vulnerable code for scanner validation.
 Each function demonstrates a different command injection pattern.
 """
 
+import ast
 import os
 import subprocess
 
@@ -22,11 +23,11 @@ def list_directory(path):
     subprocess.call("ls -la " + path, shell=True)
 
 
-# VULN: category=command_injection, id=cmdi_003, severity=critical
-# Expected scanner: bandit, semgrep
+# FIX: category=command_injection, id=cmdi_003, severity=critical
+# Fixed: replaced exec() with ast.literal_eval() to prevent code injection (CWE-95)
 def run_user_code(user_code):
-    """exec() with user input."""
-    exec(user_code)
+    """Safely evaluate user input using ast.literal_eval() instead of exec()."""
+    return ast.literal_eval(user_code)
 
 
 # VULN: category=command_injection, id=cmdi_004, severity=critical
