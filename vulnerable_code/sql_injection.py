@@ -21,13 +21,13 @@ def get_user_by_id(user_id):
     return conn.execute(query).fetchall()
 
 
-# VULN: category=sql_injection, id=sqli_002, severity=high
-# Expected scanner: bandit, semgrep
+# FIX: category=sql_injection, id=sqli_002, severity=high
+# Fixed: converted f-string SQL query to parameterized query
 def get_user_by_name(name):
-    """f-string in SQL query."""
+    """Parameterized SQL query (fixed from f-string injection)."""
     conn = get_connection()
-    query = f"SELECT * FROM users WHERE name = '{name}'"
-    return conn.execute(query).fetchall()
+    query = "SELECT * FROM users WHERE name = ?"
+    return conn.execute(query, (name,)).fetchall()
 
 
 # VULN: category=sql_injection, id=sqli_003, severity=high
