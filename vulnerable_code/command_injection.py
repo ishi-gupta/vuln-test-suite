@@ -4,6 +4,8 @@ Intentionally vulnerable code for scanner validation.
 Each function demonstrates a different command injection pattern.
 """
 
+import ast
+import operator
 import os
 import subprocess
 
@@ -29,11 +31,44 @@ def run_user_code(user_code):
     exec(user_code)
 
 
-# VULN: category=command_injection, id=cmdi_004, severity=critical
-# Expected scanner: bandit, semgrep
+# FIX: category=command_injection, id=cmdi_004, severity=critical
+# Fixed: replaced eval() with safe AST-based expression evaluator (CWE-95)
+_SAFE_OPERATORS = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.Pow: operator.pow,
+    ast.Mod: operator.mod,
+    ast.FloorDiv: operator.floordiv,
+    ast.USub: operator.neg,
+    ast.UAdd: operator.pos,
+}
+
+
+def _safe_eval_node(node):
+    """Recursively evaluate an AST node using only safe arithmetic operations."""
+    if isinstance(node, ast.Expression):
+        return _safe_eval_node(node.body)
+    if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+        return node.value
+    if isinstance(node, ast.BinOp):
+        op_func = _SAFE_OPERATORS.get(type(node.op))
+        if op_func is None:
+            raise ValueError(f"Unsupported operator: {type(node.op).__name__}")
+        return op_func(_safe_eval_node(node.left), _safe_eval_node(node.right))
+    if isinstance(node, ast.UnaryOp):
+        op_func = _SAFE_OPERATORS.get(type(node.op))
+        if op_func is None:
+            raise ValueError(f"Unsupported operator: {type(node.op).__name__}")
+        return op_func(_safe_eval_node(node.operand))
+    raise ValueError(f"Unsupported expression element: {type(node).__name__}")
+
+
 def calculate(expression):
-    """eval() with user input."""
-    return eval(expression)
+    """Safely evaluate a mathematical expression without using eval()."""
+    tree = ast.parse(expression, mode="eval")
+    return _safe_eval_node(tree)
 
 
 # VULN: category=command_injection, id=cmdi_005, severity=critical
