@@ -5,6 +5,7 @@ Each function demonstrates a different command injection pattern.
 """
 
 import os
+import shlex
 import subprocess
 
 
@@ -18,8 +19,8 @@ def ping_host(hostname):
 # VULN: category=command_injection, id=cmdi_002, severity=critical
 # Expected scanner: bandit, semgrep
 def list_directory(path):
-    """subprocess.call() with shell=True and user input."""
-    subprocess.call("ls -la " + path, shell=True)
+    """List directory contents safely without shell=True."""
+    subprocess.call(["ls", "-la", path])
 
 
 # VULN: category=command_injection, id=cmdi_003, severity=critical
@@ -39,10 +40,15 @@ def calculate(expression):
 # VULN: category=command_injection, id=cmdi_005, severity=critical
 # Expected scanner: bandit, semgrep
 def process_file(filename):
-    """subprocess.Popen with shell=True and user input."""
-    proc = subprocess.Popen(
-        "cat " + filename + " | wc -l",
-        shell=True,
+    """Count lines in a file safely without shell=True."""
+    cat_proc = subprocess.Popen(
+        ["cat", filename],
         stdout=subprocess.PIPE
     )
-    return proc.communicate()[0]
+    wc_proc = subprocess.Popen(
+        ["wc", "-l"],
+        stdin=cat_proc.stdout,
+        stdout=subprocess.PIPE
+    )
+    cat_proc.stdout.close()
+    return wc_proc.communicate()[0]
