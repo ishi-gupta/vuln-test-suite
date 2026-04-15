@@ -20,7 +20,7 @@ def hash_password_md5(password):
 # Expected scanner: bandit, semgrep
 def hash_data_sha1(data):
     """SHA1 for security-sensitive hashing."""
-    return hashlib.sha1(data.encode()).hexdigest()
+    return hashlib.sha1(data.encode(), usedforsecurity=False).hexdigest()
 
 
 # VULN: category=weak_crypto, id=crypto_003, severity=high
